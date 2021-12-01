@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L1</title>
+    <style>
+        @keyframes mymove {
+            0% { transform: translateX(0px);}
+            100% { transform: translateX(160px);}
+        }
+        .moving {
+            animation-name: mymove;
+            animation-duration: 4s;
+            animation-fill-mode: forwards;
+        }
+        * {
+            padding:0px;
+            margin:0px;
+            width:50px;
+            height:50px;
+            border-radius: 50%;
+        }
+        #light_blue {
+            background-color: lightblue;
+        }
+        #orange {
+            background-color:orange;
+            position: absolute;
+            top:60px;
+        }
+        #grey {
+            background-color: grey;
+            position: absolute;
+            top:120px;
+        }
+    </style>
+</head>
+<body>
+    <div id="light_blue"></div>
+    <div id="orange"></div>
+    <div id="grey"></div>
+    <script>
+        'use strict';
+        //1.setTimeout定时器嵌套
+        /*setTimeout(()=>{
+            light_blue.classList.add("moving");
+            setTimeout(()=>{
+                orange.classList.add("moving");
+                setTimeout(()=>{
+                    grey.classList.add("moving");
+                },4000);
+            },4000);
+        },0);*/
+        //2.Promise链式回调
+        /*const move=(idname,timeout)=>
+            new Promise((resolve,reject)=>
+                setTimeout(function(){
+                    idname.classList.add('moving');
+                    resolve();
+                },timeout))
+        move(light_blue,0)
+        .then(()=>
+        move(orange,4000)
+        ).then(()=>
+        move(grey,4000)
+        )*/
+        //3.async await异步队列
+        function f(id,timeout){
+            return new Promise((resolve,reject)=>
+            setTimeout(function(){
+                id.classList.add("moving");
+                resolve();
+            },timeout));
+        }
+        async function move(){
+            await f(light_blue,0);
+            await f(orange,4000);
+            await f(grey,4000);
+        } 
+        move();
+    </script>
+</body>
+</html>
